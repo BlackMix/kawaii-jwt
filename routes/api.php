@@ -24,15 +24,36 @@ $api->version('v1', function ($api) {
     /**
      * Routers Roles 
      */
-    $api->group(['prefix' => 'admin', 'namespace' => 'App\Api\V1\Controllers\Admin\Roles'], function($api) {
+    $api->group(['prefix' => 'admin', 'namespace' => 'App\Api\V1\Controllers\Admin'], function($api) {
         // Route to create a new role
-        $api->post('add-role', 'RolesControllers@createRole');
+        $api->post('add-role', 'Roles\RolesControllers@createRole');
         // Route to create a new permission
-        $api->post('add-permission', 'RolesControllers@createPermission');
+        $api->post('add-permission', 'Roles\RolesControllers@createPermission');
         // Route to assign role to user
-        $api->post('add-user-role', 'RolesControllers@assignRole');
+        $api->post('add-user-role', 'Roles\RolesControllers@assignRole');
         // Route to attache permission to a role
-        $api->post('add-permission-to-role', 'RolesControllers@attachPermission');
+        $api->post('add-permission-to-role', 'Roles\RolesControllers@attachPermission');
+        // Route TEST for show permissions, need token valid.
+        $api->post('show-permissions', 'Roles\RolesControllers@show');
+        /**
+         * Users
+         */
+        // List all users
+        $api->get('user', 'Users\ListUsers@list');
+        // Get a user for edit
+        $api->get('user/{id}', 'Users\Get@get');
+        // Update a user
+        $api->put('user/{id}', 'Users\Update@update');
+        // Active or Disable a User
+        $api->post('user/activate/{id}', 'Users\Active@active');
+
+        /**
+         * Organizations
+         */
+        // List all organizations
+        $api->get('organization', 'Organization\OrganizationController@list');
+
+        
 
         /**
          * More routers for edit coming soon
