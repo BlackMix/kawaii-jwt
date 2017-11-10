@@ -1,7 +1,8 @@
-## Laravel API Kawaii-jwt (JWT) for Laravel 5.5+
-![Kawaii-jwt](https://4.bp.blogspot.com/-BvRwLk3ucNw/Wf_y-MdAIhI/AAAAAAAAD_M/3EX7FF3jdBgCldMAw1HdFuisRYksyDjYQCLcBGAs/s1600/kawaiijwt.jpg)
+## Kawaii-jwt (JWT) for Laravel 5.5+ and Quasar BoilerPlate
+![Kawaii-jwt](https://4.bp.blogspot.com/-iDFV7brDjJk/WgORqIwPcmI/AAAAAAAAD_c/3KQHuWaa8qs9vzRXQCnGLDoazGo4Vjy2ACLcBGAs/s1600/1.jpg)
 
-Laravel API Kawaii-jwt is a "starter kit" Edited from laravel-api-boilerplate-jwt
+* Kawaii-jwt is API from Quasar BoilerPlate - [BoilerPlate](https://github.com/phpzm/quasar-boilerplate)
+
 
 ReLations packets:
 
@@ -11,7 +12,7 @@ ReLations packets:
 * ENTRUST [Zizaco/ENTRUST](https://github.com/Zizaco/entrust)
 
 ## Installation 
-* composer create-project kawaiiwaifus/laravel-api-kawaii-jwt myNextProject
+* composer create-project kawaiiwaifus/laravel-api-kawaii-jwt NameOfProject
 ## Usage
 * run the `php artisan entrust:migration`
 * run the `php artisan migrate`
@@ -42,6 +43,29 @@ All the API routes can be found in the `routes/api.php` file. This also follow t
 Every time you create a new project starting from this repository, the _php artisan jwt:generate_ command will be executed.
 
 ## Configuration
+
+Database example:
+
+```js
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(125) COLLATE utf8_unicode_ci NOT NULL,
+  `remember_token` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telephone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `active` int(1) NOT NULL DEFAULT '0',
+  `gender` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `address` varchar(190) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `amount` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `profile` enum('general','support') COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=325 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+```
 
 You can find all the Kawaii-jwt specific settings in the `config/kawaii-jwt.php` config file.
 
@@ -125,16 +149,9 @@ Thanks to the _barryvdh/laravel-cors_ package, you can handle CORS easily. Just 
 
 ## Tests
 
-If you want to contribute to this project, feel free to do it and open a PR. However, make sure you have tests for what you implement.
+* coming soon..
 
-In order to run tests:
-
-* create a `homestead_test` database on your machine;
-* run `phpunit`;
-
-If you want to specify a different name for the test database, don't forget to change the value in the `phpunix.xml` file.
-
-## CREDITS FROM:
-
-* Original saurce - [laravel-api-boilerplate-jwt](https://github.com/francescomalatesta/laravel-api-boilerplate-jwt)
+## CREDITS:
+* I got the idea of this project and modified some things to work.
+* [laravel-api-boilerplate-jwt](https://github.com/francescomalatesta/laravel-api-boilerplate-jwt)
 

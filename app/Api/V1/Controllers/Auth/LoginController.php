@@ -29,15 +29,32 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if ($token = Auth::guard()->attempt($credentials)) {
+
+            $perm = [];
+  
+            foreach (Auth::user()->roles()->get() as $p) {
+                $perm += [
+                  $p->name => [
+                    'permission' => $p->permissions[0]['id']
+                  ]
+                ];
+            }
+
             return response()->json([
                 'body' => [
                 'token' => $token,
-                'user' => Auth::guard()->user(),
+                'user' => [
+                  'id' => Auth::user()->id,
+                  'name' => Auth::user()->name,
+                  'email' => Auth::user()->email,
+                  'permissions' => $perm
+                ],
                 'token_type' => 'bearer',
                 'expires_in' => Auth::guard()->factory()->getTTL() * 60
                 ]
-            ]);
-        }
+            ], 200);
+
+        } // if false continue
 
         return response()->json(['error' => 'Unauthorized'], 401);
     }
