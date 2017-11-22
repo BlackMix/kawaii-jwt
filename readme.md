@@ -1,4 +1,4 @@
-## Kawaii-jwt (JWT) for Laravel 5.5+ and Quasar BoilerPlate
+## Kawaii-jwt (JWT) for Laravel 5.5+ and Quasar BoilerPlate [![Build Status](https://travis-ci.org/BlackMix/kawaii-jwt.svg)](https://travis-ci.org/BlackMix/kawaii-jwt)
 ![Kawaii-jwt](https://4.bp.blogspot.com/-iDFV7brDjJk/WgORqIwPcmI/AAAAAAAAD_c/3KQHuWaa8qs9vzRXQCnGLDoazGo4Vjy2ACLcBGAs/s1600/1.jpg)
 
 * Kawaii-jwt is API from Quasar BoilerPlate - [BoilerPlate](https://github.com/phpzm/quasar-boilerplate)
@@ -9,12 +9,11 @@ ReLations packets:
 * JWT-Auth - [tymondesigns/jwt-auth](https://github.com/tymondesigns/jwt-auth)
 * Dingo API - [dingo/api](https://github.com/dingo/api)
 * Laravel-CORS [barryvdh/laravel-cors](http://github.com/barryvdh/laravel-cors)
-* ENTRUST [Zizaco/ENTRUST](https://github.com/Zizaco/entrust)
+* Laratrust [Laratrust](https://github.com/santigarcor/laratrust/)
 
 ## Installation 
 * composer create-project kawaiiwaifus/laravel-api-kawaii-jwt NameOfProject
 ## Usage
-* run the `php artisan entrust:migration`
 * run the `php artisan migrate`
 * run the `php artisan db:seed` for create tests users.
 ## Main Features
@@ -59,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `gender` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address` varchar(190) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` varchar(75) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `profile` enum('general','support') COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
