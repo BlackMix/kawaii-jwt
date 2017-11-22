@@ -8,104 +8,19 @@ use App\Api\V1\Models\Permission,
     Illuminate\Http\Request,
     App\Api\V1\Controllers\Controller,
     Illuminate\Support\Facades\Auth,
-    JWTAuth, Tymon\JWTAuth\Exceptions\JWTException,
     Log;
 
 class RolesControllers extends Controller
 {
-    /*
+    /**
      * instance.
      * @return void
+     */
     public function __construct()
     {
-        $this->middleware('auth:api','role:admin', []);
-    }
-    */
-
-    public function index()
-    {
-       // return response()->json(['auth'=> Auth::user(), 'users' => User::all()]);
+        $this->middleware(['auth:api','role:admin.roles']);
     }
 
-    /**
-     * Create Roles
-     * @ Model Role
-     * @@ App\Api\V1\Models\Role
-     */
-    public function createRole(Request $request){
-
-        /**
-         * select role by name
-         */
-        $role = Role::where('name', '=', 
-        $request->input('name'))
-                ->first();
-
-        if ($role):
-
-            return response()->json([
-                'body' => [
-                  'message' => "Role $role->name already exists and can not be added again!",
-                  'status' => 'warning'
-                ]]);
-
-        else:
-
-            $role = new Role();
-            $role->name = $request->input('name');
-            $role->display_name = $request->input('display_name');
-            $role->description = $request->input('description');
-            $role->save();
-
-            return response()->json([
-                'body' => [
-                    'message' => "Role $role->name created with seuccess!",
-                    'status' => 'success'
-                ]]);
-
-        endif;
-
-    }
-
-    /**
-     * Create Permissions
-     * @ Model Permission
-     * @@ App\Api\V1\Models\Permission
-     */
-    public function createPermission(Request $request){
-
-        /**
-         * select permission by name
-         */
-        $permission = Permission::where('name', '=', 
-        $request->input('name'))
-                ->first();
-        
-        if ($permission):
-
-            return response()->json([
-                'body' => [
-                    'message' => "Permission $permission->name already exists and can not be added again!",
-                    'status' => 'warning'
-                    ]]);
-
-        else:
-
-            $permission = new Permission();
-            $permission->name = $request->input('name');
-            $permission->display_name = $request->input('display_name');
-            $permission->description = $request->input('description');
-            $permission->save();
-
-            return response()->json([
-                'body' => [
-                    'message' => "Permission $permission->name created with seuccess!",
-                    'status' => 'success'
-                    ]]);
-
-        endif;
-
-    }
 
     /**
      * Add Role to User
@@ -125,17 +40,20 @@ class RolesControllers extends Controller
         $role = Role::where('name', '=', 
         $request->input('role'))
                 ->first();
+
+        // check if this user has the role
+        if (Auth::user()->hasRole($request->input('role'))):
+            return response()->json(['body' => ['message' => $user->name." already have this Role!", 'status' => 'warning']]);
+        endif;
+
         /**
          * add role to user
          */
-        $result = $user->roles()
+        $user->roles()
              ->attach($role->id);
 
-        if ($result):
-            return response()->json(['body' => ['message' => "Role: $role->name added to User: $user->name with success!", 'status' => 'success']]);
-        else:
-            return response()->json(['body' => ['message' => "Erro to add this role!", 'status' => 'warning']]);
-        endif;
+        return response()->json(['body' => ['message' => "Role: $role->name added to User: $user->name with success!", 'status' => 'success']]);
+
     }
 
     /**
@@ -144,11 +62,6 @@ class RolesControllers extends Controller
      * @@ App\Api\V1\Models\Role, App\Api\V1\Models\Permission
      */
     public function attachPermission(Request $request){
-/*
-        if (!Auth::user()->ability(['admin.roles'], ['create'])):
-            return 'no permission';
-        endif;
-*/
         /**
          * select role by name
          */
@@ -195,6 +108,10 @@ class RolesControllers extends Controller
      * @return object permissions for test
      */
     public function show(){
+
+        if (!Auth::user()->ability(['admin.roles'], ['create'])):
+            return 'no permission';
+        endif;
 
         $perm = [];
         foreach (Auth::user()->roles()->get() as $p) {

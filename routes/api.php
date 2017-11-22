@@ -25,27 +25,47 @@ $api->version('v1', function ($api) {
      * Routers Roles 
      */
     $api->group(['prefix' => 'admin', 'namespace' => 'App\Api\V1\Controllers\Admin'], function($api) {
-        // Route to create a new role
-        $api->post('add-role', 'Roles\RolesControllers@createRole');
+
+        // Route to List all Permissions
+        $api->get('permissions', 'Roles\PermissionsList@List');
+        // Route to Get the Permission
+        $api->get('permissions/{id}', 'Roles\PermissionsGet@Get');
         // Route to create a new permission
-        $api->post('add-permission', 'Roles\RolesControllers@createPermission');
+        $api->post('permissions', 'Roles\PermissionsCreate@CreatePermission');
+        // Route to update Permission
+        $api->put('permissions/{id}', 'Roles\PermissionsUpdate@UpdatePermission');
+        // Route to Delete Permission
+        $api->delete('permissions/{id}', 'Roles\PermissionsDelete@Delete');
+
+
         // Route to assign role to user
         $api->post('add-user-role', 'Roles\RolesControllers@assignRole');
         // Route to attache permission to a role
         $api->post('add-permission-to-role', 'Roles\RolesControllers@attachPermission');
-        // Route TEST for show permissions, need token valid.
-        $api->post('show-permissions', 'Roles\RolesControllers@show');
+
+        // List all Roles
+        $api->get('roles', 'Roles\RolesList@list');
+        // Get Role
+        $api->get('roles/{id}', 'Roles\RolesGet@Get');
+        // Route to create a new role
+        $api->post('roles', 'Roles\RolesCreate@CreateRole');
+        // Route to create a new role
+        $api->put('roles/{id}', 'Roles\RolesUpdate@Update');
+        // delete a Role
+        $api->delete('roles/{id}', 'Roles\RolesDelete@Delete');
+
+
         /**
          * Users
          */
         // List all users
-        $api->get('user', 'Users\ListUsers@list');
+        $api->get('users', 'Users\ListUsers@list');
         // Get a user for edit
-        $api->get('user/{id}', 'Users\Get@get');
+        $api->get('users/{id}', 'Users\Get@get');
         // Update a user
-        $api->put('user/{id}', 'Users\Update@update');
+        $api->put('users/{id}', 'Users\Update@update');
         // Active or Disable a User
-        $api->post('user/activate/{id}', 'Users\Active@active');
+        $api->post('users/activate/{id}', 'Users\Active@active');
 
         /**
          * Organizations
@@ -58,6 +78,43 @@ $api->version('v1', function ($api) {
         /**
          * More routers for edit coming soon
          */
+
+
+         /**
+         * Series
+         */
+        // List all Series
+
+        $api->get('series/seasons', 'Series\SeriesSeason@Season');
+        $api->get('series/genres', 'Series\Genres@List');
+        
+        $api->get('series', 'Series\SeriesList@List');
+        $api->get('series/{id}', 'Series\SeriesGet@Get');
+        $api->put('series/{id}', 'Series\SeriesUpdate@Update');
+
+        /**
+         * Files
+         */
+        $api->get('files', 'Files\FilesList@List');
+
+        
+        /**
+         * Category
+         */
+        $api->get('categories', 'Categories\CategoriesList@List');
+
+        
+        
+    });
+
+    /**
+     * Routers Series public 
+     */
+    $api->group(['prefix' => 'series', 'namespace' => 'App\Api\V1\Controllers\Series'], function($api) {
+        /**
+         * Category
+         */
+        $api->get('categories', 'Categories\CategoriesController@List');
     });
 
     $api->group(['middleware' => 'jwt.auth'], function($api) {
